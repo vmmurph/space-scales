@@ -53,7 +53,7 @@
 
             const setSizeBy = value => {
                 sizeBy = value
-                drawTransition(dataset)
+                draw(dataset, true)
             }
 
             // math to give bodies x-positions and add space between them
@@ -64,15 +64,16 @@
                 spacer = spacerTotal / (data.length + 1)
             }
 
-            const draw = data => {
-                _clear()
-                
-                // sets svg dimensions
-                width = window.innerWidth - margin.left - margin.right - rightPadding
-                height = window.innerHeight - margin.top - margin.bottom - bottomPadding
-                svg.attr('width', width + margin.left + margin.right)
-                    .attr('height', height + margin.top + margin.bottom)
-                g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
+            const draw = (data, isTransition = false) => {
+                if (!isTransition) {
+                    _clear()
+                    // sets svg dimensions
+                    width = window.innerWidth - margin.left - margin.right - rightPadding
+                    height = window.innerHeight - margin.top - margin.bottom - bottomPadding
+                    svg.attr('width', width + margin.left + margin.right)
+                        .attr('height', height + margin.top + margin.bottom)
+                    g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
+                }
                 
                 calcXpos(data)
 
@@ -85,39 +86,17 @@
 
                 const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
-                g.selectAll('circle')
-                    .data(data)
-                    .enter()
-                    .append('circle')
-                        .attr('cx', d => xScale(d.xPos))
-                        .attr('cy', height / 2)
-                        .attr('r', d => xScale(d[sizeBy]))
-                        .attr('fill', d => d.color)
-                        .attr('stroke-width', 2)
-                        .attr('stroke', 'black')
-            }
+                let selection = g.selectAll('circle').data(data)
+                if (isTransition) { selection = selection.transition().duration(7000) }
+                else { selection = selection.enter().append('circle') }
 
-            const drawTransition = data => {
-                calcXpos(data)
-
-                let startPosition = spacer
-                data = data.map(d => {
-                    d.xPos = startPosition + d[sizeBy]
-                    startPosition += d[sizeBy] * 2 + spacer
-                    return d
-                })
-
-                const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
-
-                g.selectAll('circle')
-                    .data(data)
-                    .transition()
-                        .attr('cx', d => xScale(d.xPos))
-                        .attr('cy', height / 2)
-                        .attr('r', d => xScale(d[sizeBy]))
-                        .attr('fill', d => d.color)
-                        .attr('stroke-width', 2)
-                        .attr('stroke', 'black')
+                selection
+                    .attr('cx', d => xScale(d.xPos))
+                    .attr('cy', height / 2)
+                    .attr('r', d => xScale(d[sizeBy]))
+                    .attr('fill', d => d.color)
+                    .attr('stroke-width', 2)
+                    .attr('stroke', 'black')
             }
 
             draw(dataset)
