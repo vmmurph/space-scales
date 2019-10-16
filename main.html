@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <link rel="stylesheet" href="styles/bootstrap-sketchy.min.css">
         <title>Space Scales</title>
         <script src="https://d3js.org/d3.v5.min.js"></script>
-        <select id="sizeBy" onchange="setSizeBy(this.options[this.selectedIndex].value)">
-                <option value="radius">radius</option>
-                <option value="density">density</option>
-            </select>
+        <div class="buttons">
+            <span class="sizebyGroup">
+                <button id="radius" onclick="setSizeBy('radius')" class="sizeby btn btn-primary">RADIUS</button>
+                <button id="density" onclick="setSizeBy('density')" class="sizeby btn btn-outline-primary">DENSITY</button>
+                <button id="mass" onclick="setSizeBy('mass')" class="sizeby btn btn-outline-primary">MASS</button>
+            </span>
+            <span id="toggles"></span>
+        </div>
         <svg id="canvas"></svg>
+        <style>
+            .buttons {
+                margin-bottom: 5px;
+                margin-right: 15px;
+                margin-top: 5px;
+                margin-left: 5px;
+            }
+
+            button {
+                margin-right: 3px;
+            }
+
+            svg {
+                background-color: #EADBC4;
+                border-style: solid;
+                border-width: 2px;
+            }
+
+            .sizebyGroup {
+                margin-right: 10px;
+            }
+
+            #toggles {
+                float: right;
+            }
+        </style>
     </head>
     <body>
         <script>
-            // colors
-            const background = '#EADBC4'
             // percentage of the total to be used for empty space between bodies
             const spacerPercent = .2
             // margin and canvas init
@@ -24,28 +53,107 @@
             }
             // additional padding on svg since using straight window size causes scrollbars
             // also useful if needing to add other stuff to the window (buttons, etc)
-            const bottomPadding = 40
+            const bottomPadding = 50
             const rightPadding = 16
             // the attribute that we will size bodies by
             let sizeBy = 'radius'
 
-            // radius in km, density in g/cm^3
+            // radius in km, density in g/cm^3, mass in 10^24kg
             let dataset = [
-                { name: 'Sol', radius: 696000, color: 'white', density: 1.41 },
-                { name: 'Mercury', radius: 2439, color: 'gray', density: 5.4 },
-                { name: 'Venus', radius: 6051, color: 'lightyellow', density: 5.2 },
-                { name: 'Earth', radius: 6378, color: 'lightblue', density: 5.5 },
-                { name: 'Mars', radius: 3389, color: 'maroon', density: 3.9 },
-                { name: 'Jupiter', radius: 69911, color: 'orange', density: 1.3 },
-                { name: 'Saturn', radius: 58232, color: 'gold', density: .7 },
-                { name: 'Uranus', radius: 25361, color: 'lightblue', density: 1.3 },
-                { name: 'Neptune', radius: 24621, color: 'lightblue', density: 1.6 },
-                { name: 'Pluto', radius: 1184, color: 'lightbrown', density: 1.88 }
+                {
+                    name: 'Sol',
+                    radius: 696000,
+                    color: 'white',
+                    density: 1.41,
+                    mass: 1989000,
+                    enabled: true
+                },
+                {
+                    name: 'Mercury',
+                    radius: 2439,
+                    color: 'gray',
+                    density: 5.4,
+                    mass: .33,
+                    enabled: true
+                },
+                {
+                    name: 'Venus',
+                    radius: 6051,
+                    color: 'lightyellow',
+                    density: 5.2,
+                    mass: 4.87,
+                    enabled: true
+                },
+                {
+                    name: 'Earth',
+                    radius: 6378,
+                    color: 'lightblue',
+                    density: 5.5,
+                    mass: 5.97,
+                    enabled: true
+                },
+                {
+                    name: 'Mars',
+                    radius: 3389,
+                    color: 'maroon',
+                    density: 3.9,
+                    mass: .0642,
+                    enabled: true
+                },
+                {
+                    name: 'Jupiter',
+                    radius: 69911,
+                    color: 'orange',
+                    density: 1.3,
+                    mass: 1898,
+                    enabled: true
+                },
+                {
+                    name: 'Saturn',
+                    radius: 58232,
+                    color: 'gold',
+                    density: .7,
+                    mass: 568,
+                    enabled: true
+                },
+                {
+                    name: 'Uranus',
+                    radius: 25361,
+                    color: 'lightblue',
+                    density: 1.3,
+                    mass: 86.8,
+                    enabled: true
+                },
+                {
+                    name: 'Neptune',
+                    radius: 24621,
+                    color: 'lightblue',
+                    density: 1.6,
+                    mass: 102,
+                    enabled: true
+                },
+                {
+                    name: 'Pluto',
+                    radius: 1184,
+                    color: 'lightbrown',
+                    density: 1.88,
+                    mass: .0146,
+                    enabled: true
+                }
             ]
+
+            // create toggle buttons for each body
+            d3.select('#toggles').selectAll('button')
+                .data(dataset)
+                .enter()
+                .append('button')
+                    .attr('class', 'btn btn-primary')
+                    .text(d => d.name)
+                    .attr('onclick', (d, i) => `toggleBody(${i})`)
+                    .attr('id', (d, i) => `toggle${i}`)
 
             const svg = d3.select('#canvas')
             let width, height, g, xMax, spacer
-            svg.style('background-color', background)
 
             const _clear = () => {
                 svg.selectAll('*').remove()
@@ -54,14 +162,40 @@
             const setSizeBy = value => {
                 sizeBy = value
                 draw(dataset, true)
+                d3.selectAll('.sizeby')
+                    .classed('btn-primary', false)
+                    .classed('btn-outline-primary', true)
+                d3.select(`#${value}`)
+                    .classed('btn-outline-primary', false)
+                    .classed('btn-primary', true)
+            }
+
+            const toggleBody = index => {
+                dataset[index].enabled = !dataset[index].enabled
+                draw(dataset, true)
+                d3.select(`#toggle${index}`)
+                    .classed('btn-primary', dataset[index].enabled)
+                    .classed('btn-outline-primary', !dataset[index].enabled)
             }
 
             // math to give bodies x-positions and add space between them
             const calcXpos = data => {
-                const totalRadius = data.reduce((sum, d) => sum + d[sizeBy] * 2, 0)
+                const totalRadius = data.reduce((sum, d) => sum + (d[sizeBy] * 2 * d.enabled), 0)
                 xMax = totalRadius / (1 - spacerPercent)
                 const spacerTotal = xMax * spacerPercent
-                spacer = spacerTotal / (data.length + 1)
+                console.log('spacerTotal', spacerTotal)
+                const visibleBodies = data.reduce((sum, d) => sum + d.enabled, 0)
+                console.log('visibleBodies', visibleBodies)
+                console.log('xMax', xMax)
+                spacer = spacerTotal / (visibleBodies + 1)
+                console.log('spacer', spacer)
+
+                let startPosition = spacer
+                return data.map(d => {
+                    d.xPos = startPosition + d[sizeBy]
+                    startPosition += (d[sizeBy] * 2 + spacer) * d.enabled
+                    return d
+                })
             }
 
             const draw = (data, isTransition = false) => {
@@ -75,14 +209,8 @@
                     g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
                 }
                 
-                calcXpos(data)
-
-                let startPosition = spacer
-                data = data.map(d => {
-                    d.xPos = startPosition + d[sizeBy]
-                    startPosition += d[sizeBy] * 2 + spacer
-                    return d
-                })
+                data = calcXpos(data)
+                console.log(data)
 
                 const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
@@ -93,10 +221,11 @@
                 selection
                     .attr('cx', d => xScale(d.xPos))
                     .attr('cy', height / 2)
-                    .attr('r', d => xScale(d[sizeBy]))
+                    .attr('r', d => xScale(d[sizeBy]) * d.enabled)
                     .attr('fill', d => d.color)
                     .attr('stroke-width', 2)
                     .attr('stroke', 'black')
+                    .attr('id', d => d.name)
             }
 
             draw(dataset)
