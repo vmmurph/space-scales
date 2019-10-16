@@ -1,0 +1,24 @@
+button {
+    margin: 2px;
+}
+
+svg {
+    background-color: #EADBC4;
+    border-style: solid;
+    border-width: 2px;
+    margin-left: 3px;
+}
+
+#sizeByGroup {
+    display: inline-block;
+}
+
+#toggles {
+    display: inline-block;
+    margin-right: 15px;
+}
+
+#toggles .btn-outline-primary:hover {
+    color: black;
+    background-color: white;
+}
