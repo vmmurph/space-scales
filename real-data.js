@@ -75,7 +75,7 @@ let real_data = [
     {
         name: 'Neptune',
         radius: 24621,
-        color: 'blue',
+        color: '#117ccf',
         density: 1.6,
         mass: 102,
         enabled: true
@@ -83,7 +83,7 @@ let real_data = [
     {
         name: 'Pluto',
         radius: 1184,
-        color: 'lightbrown',
+        color: '#b0652c',
         density: 1.88,
         mass: .0146,
         enabled: true

@@ -87,7 +87,7 @@ const draw = (isTransition = false) => {
     const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
     let selection = g.selectAll('circle').data(dataset)
-    if (isTransition) { selection = selection.transition().duration(5000) }
+    if (isTransition) { selection = selection.transition().duration(4000) }
     else { selection = selection.enter().append('circle') }
 
     selection
@@ -102,52 +102,42 @@ const draw = (isTransition = false) => {
     drawLabels(xScale, isTransition)
 }
 
-const drawLabels = (xScale, isTransition = false) => {
-    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.4, 3])
-    // func that decides if body is big enough to put label inside
-    const isBig = d => xScale(d.radius * 2) > (width * .05)
+const getBBox = d => {
+    const ele = svg.append('text').attr('font-size', getFontSize(d)).text(d.name).attr('id', 'deleteme')
+    const bbox = ele.node().getBBox()
+    d3.select('#deleteme').remove()
+    return bbox
+}
 
-    const getBBox = (text, fontSize) => {
-        const ele = svg.append('text').attr('font-size', fontSize).text(text).attr('id', 'deleteme')
-        const bbox = ele.node().getBBox()
-        d3.select('#deleteme').remove()
-        return bbox
+const getFontSize = d => {
+    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.6, 3])
+    return `${fontScale(d[sizeBy]) * d.enabled}rem`
+}
+
+const drawLabels = (xScale, isTransition = false) => {
+    // func that decides if body is big enough to put label inside
+    const isBig = d => xScale(d[sizeBy] * 2) > (width * .03)
+    
+    const getTransform = d => {
+        const offset = getBBox(d).width / 2
+        const rotate = `rotate(${isBig(d) ? 0 : -90}, ${xScale(d.xPos)}, ${height / 2})`
+        const translate = `translate(${isBig(d) ? xScale(d.xPos) - offset : xScale(d.xPos + d[sizeBy]) + 5}, ${height / 2 + 2})`
+        return `${rotate} ${translate}`
     }
 
     if (!isTransition) {
-        svg.selectAll('text').data(dataset).enter()
-            .append('text')
-            .text(d => d.name)
-            .attr('font-size', d => `${fontScale(d[sizeBy])}rem`)
-            .attr('opacity', 0)
-            .attr('id', d => `${d.name}-fake`)
-            
         g.selectAll('g')
             .data(dataset)
             .enter()
             .append('g')
                 .attr('id', d => `${d.name}-label`)
-                .attr('transform', d => {
-                    let node = d3.select(`#${d.name}-fake`).node()
-                    let offset = node.getBBox().width / 3
-                    // console.log(`looking at ${d.name}, offset is ${offset}`)
-                    // console.log(node.getBBox())
-                    return `rotate(${isBig(d) ? 0 : -90}, ${xScale(d.xPos)}, ${height / 2})
-                    translate(${isBig(d) ? xScale(d.xPos) - offset : xScale(d.xPos + d[sizeBy]) + 5}, ${height / 2 + 2})`
-                })
+                .attr('transform', getTransform)
                 .append('text')
                     .text(d => d.name)
-                    .attr('font-size', d => `${fontScale(d[sizeBy])}rem`)
+                    .attr('font-size', getFontSize)
     } else {
-        g.selectAll('g').data(dataset).transition().duration(5000)
-            .attr('transform', d => {
-                let node = d3.select(`#${d.name}-fake`).node()
-                let offset = node.getBBox().width / 2.8
-                return `rotate(${isBig(d) ? 0 : -90}, ${xScale(d.xPos)}, ${height / 2})
-                translate(${isBig(d) ? xScale(d.xPos) - offset : xScale(d.xPos + d[sizeBy]) + 5}, ${height / 2 + 2})`
-            })
-            .select('text')
-                .attr('font-size', d => `${fontScale(d[sizeBy])}rem`)
+        g.selectAll('g').data(dataset).transition().duration(4000)
+            .attr('transform', getTransform)
+            .select('text').attr('font-size', getFontSize)
     }
-    
 }
