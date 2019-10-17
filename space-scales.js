@@ -116,7 +116,7 @@ const getFontSize = d => {
 
 const drawLabels = (xScale, isTransition = false) => {
     // func that decides if body is big enough to put label inside
-    const isBig = d => xScale(d[sizeBy] * 2) > (width * .03)
+    const isBig = d => xScale(d[sizeBy] * 2) > (width * .035)
     
     const getTransform = d => {
         const offset = getBBox(d).width / 2
