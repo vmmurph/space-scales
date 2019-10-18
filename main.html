@@ -65,9 +65,11 @@
             if (getUrlParameter('data') == 'ksp') {
                 dataset = kerbal_data
             }
+
             createToggleButtons(d3.select('#toggles'), 'onBodyToggle')
-            draw()
             window.onresize = () => draw()
+
+            d3.select(window).on('load', draw)
         </script>
     </body>
 </html>

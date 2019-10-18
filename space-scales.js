@@ -71,12 +71,16 @@ const calcXpos = () => {
 }
 
 // draws everything
-const draw = (isTransition = false) => {
+const draw = (isTransition = false, duration = 4000) => {
     if (!isTransition) {
         _clear()
         // sets svg dimensions
         width = window.innerWidth - margin.left - margin.right - rightPadding
-        height = window.innerHeight - margin.top - margin.bottom - bottomPadding
+        if (window.innerHeight > window.innerWidth) {
+            height = window.innerWidth - margin.top - margin.bottom - bottomPadding
+        } else {
+            height = window.innerHeight - margin.top - margin.bottom - bottomPadding
+        }
         svg.attr('width', width + margin.left + margin.right)
             .attr('height', height + margin.top + margin.bottom)
         g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
@@ -87,7 +91,7 @@ const draw = (isTransition = false) => {
     const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
     let selection = g.selectAll('circle').data(dataset)
-    if (isTransition) { selection = selection.transition().duration(4000) }
+    if (isTransition) { selection = selection.transition().duration(duration) }
     else { selection = selection.enter().append('circle') }
 
     selection
@@ -99,11 +103,11 @@ const draw = (isTransition = false) => {
         .attr('stroke', 'black')
         .attr('id', d => d.name)
 
-    drawLabels(xScale, isTransition)
+    drawLabels(xScale, isTransition, duration)
 }
 
 const getBBox = d => {
-    const ele = svg.append('text').attr('font-size', getFontSize(d)).text(d.name).attr('id', 'deleteme')
+    const ele = g.append('text').attr('font-size', getFontSize(d)).text(d.name).attr('id', 'deleteme')
     const bbox = ele.node().getBBox()
     d3.select('#deleteme').remove()
     return bbox
@@ -114,7 +118,7 @@ const getFontSize = d => {
     return `${fontScale(d[sizeBy]) * d.enabled}rem`
 }
 
-const drawLabels = (xScale, isTransition = false) => {
+const drawLabels = (xScale, isTransition = false, duration = 4000) => {
     // func that decides if body is big enough to put label inside
     const isBig = d => xScale(d[sizeBy] * 2) > (width * .035)
     
@@ -136,7 +140,7 @@ const drawLabels = (xScale, isTransition = false) => {
                     .text(d => d.name)
                     .attr('font-size', getFontSize)
     } else {
-        g.selectAll('g').data(dataset).transition().duration(4000)
+        g.selectAll('g').data(dataset).transition().duration(duration)
             .attr('transform', getTransform)
             .select('text').attr('font-size', getFontSize)
     }

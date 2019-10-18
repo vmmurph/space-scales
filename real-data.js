@@ -35,7 +35,7 @@ let real_data = [
     {
         name: 'Mars',
         radius: 3389,
-        color: 'maroon',
+        color: '#ff5050',
         density: 3.9,
         mass: .639,
         enabled: true
