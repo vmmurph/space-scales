@@ -12,9 +12,9 @@
     <body id="root">
         <div class="buttons">
             <div id="sizebyGroup">
-                <button id="radius" onclick="onSizeByChange('radius')" class="sizeby btn btn-primary">RADIUS</button>
-                <button id="density" onclick="onSizeByChange('density')" class="sizeby btn btn-outline-primary">DENSITY</button>
-                <button id="mass" onclick="onSizeByChange('mass')" class="sizeby btn btn-outline-primary">MASS</button>
+                <button id="radius" onclick="onSizeByChange('radius')" class="sizeby btn btn-primary">Radius</button>
+                <button id="density" onclick="onSizeByChange('density')" class="sizeby btn btn-outline-primary">Density</button>
+                <button id="mass" onclick="onSizeByChange('mass')" class="sizeby btn btn-outline-primary">Mass</button>
             </div>
             <div id="toggles"></div>
         </div>
@@ -46,6 +46,7 @@
                     .classed('btn-primary', true)
             }
 
+            
             // adds/removes a body, sets styles on buttons
             const onBodyToggle = (index) => {
                 const toggled = toggleBody(index)
@@ -66,10 +67,12 @@
                 dataset = kerbal_data
             }
 
-            createToggleButtons(d3.select('#toggles'), 'onBodyToggle')
-            window.onresize = () => draw()
-
-            d3.select(window).on('load', draw)
+            // on window load, create toggle buttons and draw canvas
+            d3.select(window).on('load', () => {
+                createToggleButtons(d3.select('#toggles'), 'onBodyToggle')
+                window.onresize = () => draw()
+                draw()
+            })
         </script>
     </body>
 </html>
