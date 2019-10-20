@@ -8,9 +8,10 @@
         <script src="space-scales.js"></script>
         <script src="real-data.js"></script>
         <script src="kerbal-data.js"></script>
+        <script src="moon-data.js"></script>
     </head>
     <body id="root">
-        <div class="buttons">
+        <div id="buttons">
             <div id="sizebyGroup">
                 <button id="radius" onclick="onSizeByChange('radius')" class="sizeby btn btn-primary">Radius</button>
                 <button id="density" onclick="onSizeByChange('density')" class="sizeby btn btn-outline-primary">Density</button>
@@ -30,10 +31,6 @@
                 bottom: 10,
                 left: 10
             }
-            // additional padding on svg since using straight window size causes scrollbars
-            // also useful if needing to add other stuff to the window (buttons, etc)
-            const bottomPadding = 90
-            const rightPadding = 16
 
             // resizes bodies, sets styles on buttons
             const onSizeByChange = (value) => {
@@ -45,7 +42,6 @@
                     .classed('btn-outline-primary', false)
                     .classed('btn-primary', true)
             }
-
             
             // adds/removes a body, sets styles on buttons
             const onBodyToggle = (index) => {
@@ -63,8 +59,10 @@
             }
 
             let dataset = real_data
-            if (getUrlParameter('data') == 'ksp') {
-                dataset = kerbal_data
+            const dataParam = getUrlParameter('data')
+            switch (dataParam) {
+                case 'ksp': dataset = kerbal_data; break
+                case 'moons': dataset = moon_data; break
             }
 
             // on window load, create toggle buttons and draw canvas

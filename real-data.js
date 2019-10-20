@@ -33,6 +33,14 @@ let real_data = [
         enabled: true
     },
     {
+        name: 'Luna',
+        radius: 1737.1,
+        color: 'lightgray',
+        density: 3.34,
+        mass: .0734767,
+        enabled: false
+    },
+    {
         name: 'Mars',
         radius: 3389,
         color: '#ff5050',

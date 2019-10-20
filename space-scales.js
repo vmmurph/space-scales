@@ -4,7 +4,7 @@
  * 
  * There should also be a variable "dataset" that contains the dataset you want to use
  */
-let width, height, g, xMax, spacer, sizeBy = 'radius'
+let width, height, g, xMax, spacer, xScale, sizeBy = 'radius'
 
 /**
  * Creates toggle buttons for each body. Requires a selection (the dom element you want the buttons
@@ -23,7 +23,7 @@ const createToggleButtons = (selection, toggleFunctionName) => {
         .data(dataset)
         .enter()
         .append('button')
-            .attr('class', 'btn btn-primary')
+            .attr('class', d => d.enabled ? 'btn btn-primary' : 'btn btn-outline-primary')
             .text(d => d.name)
             .attr('onclick', (d, i) => `${toggleFunctionName}(${i})`)
             .attr('id', (d, i) => `toggle${i}`)
@@ -74,6 +74,10 @@ const calcXpos = () => {
 const draw = (isTransition = false, duration = 4000) => {
     if (!isTransition) {
         _clear()
+        // additional padding on svg since using straight window size causes scrollbars
+            // also useful if needing to add other stuff to the window (buttons, etc)
+            const bottomPadding = d3.select('#buttons').node().clientHeight + 3
+            const rightPadding = 16
         // sets svg dimensions
         width = window.innerWidth - margin.left - margin.right - rightPadding
         if (window.innerHeight > window.innerWidth) {
@@ -88,7 +92,7 @@ const draw = (isTransition = false, duration = 4000) => {
     
     dataset = calcXpos()
 
-    const xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
+    xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
     let selection = g.selectAll('circle').data(dataset)
     if (isTransition) { selection = selection.transition().duration(duration) }
@@ -103,7 +107,7 @@ const draw = (isTransition = false, duration = 4000) => {
         .attr('stroke', 'black')
         .attr('id', d => d.name)
 
-    drawLabels(xScale, isTransition, duration)
+    drawLabels(isTransition, duration)
 }
 
 const getBBox = d => {
@@ -118,10 +122,15 @@ const getFontSize = d => {
     return `${fontScale(d[sizeBy]) * d.enabled}rem`
 }
 
-const drawLabels = (xScale, isTransition = false, duration = 4000) => {
-    // func that decides if body is big enough to put label inside
-    const isBig = d => xScale(d[sizeBy] * 2) > (width * .035)
-    
+// func that decides if body is big enough to put label inside
+// const isBig = d => xScale(d[sizeBy] * 2) > (width * .035)
+const isBig = d => {
+    const pad = 10
+    const w = getBBox(d).width
+    return w + pad * 2 < xScale(d[sizeBy] * 2)
+}
+
+const drawLabels = (isTransition = false, duration = 4000) => {
     const getTransform = d => {
         const offset = getBBox(d).width / 2
         const rotate = `rotate(${isBig(d) ? 0 : -90}, ${xScale(d.xPos)}, ${height / 2})`
