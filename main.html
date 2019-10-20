@@ -17,7 +17,6 @@
                 <button id="density" onclick="onSizeByChange('density')" class="sizeby btn btn-outline-primary">Density</button>
                 <button id="mass" onclick="onSizeByChange('mass')" class="sizeby btn btn-outline-primary">Mass</button>
             </div>
-            <div id="toggles"></div>
         </div>
         <svg id="canvas"></svg>
         <script>
@@ -27,8 +26,8 @@
             // margin and canvas init
             const margin = {
                 top: 10,
-                right: 10,
-                bottom: 10,
+                right: 14,
+                bottom: 14,
                 left: 10
             }
 
@@ -41,14 +40,6 @@
                 d3.select(`#${value}`)
                     .classed('btn-outline-primary', false)
                     .classed('btn-primary', true)
-            }
-            
-            // adds/removes a body, sets styles on buttons
-            const onBodyToggle = (index) => {
-                const toggled = toggleBody(index)
-                toggled
-                    .classed('btn-primary', dataset[index].enabled)
-                    .classed('btn-outline-primary', !dataset[index].enabled)
             }
 
             getUrlParameter = name => {
@@ -67,7 +58,6 @@
 
             // on window load, create toggle buttons and draw canvas
             d3.select(window).on('load', () => {
-                createToggleButtons(d3.select('#toggles'), 'onBodyToggle')
                 window.onresize = () => draw()
                 draw()
             })
