@@ -77,8 +77,8 @@ const drawSizeButton = (isTransition = false) => {
 /**
  * Adds or removes a body, then redraws. Returns the button selection.
  */
-const toggleBody = index => {
-    dataset[index].enabled = !dataset[index].enabled
+const toggleBody = (d, i) => {
+    dataset[i].enabled = !dataset[i].enabled
     draw(true)
 }
 
@@ -103,8 +103,7 @@ const draw = (isTransition = false, duration = defaultDuration) => {
     if (!isTransition) {
         _clear()
 
-        // additional padding on svg since using straight window size causes scrollbars
-        // also useful if needing to add other stuff to the window (buttons, etc)
+        // additional resize to account for padding or other elements on the page
         const horizontalResize = 6
         const verticalResize = 6
 
@@ -136,7 +135,7 @@ const drawBodies = (isTransition = false, duration = defaultDuration) => {
     else {
         selection = selection.enter()
             .append('circle')
-            .on('click', (d, i) => toggleBody(i))
+            .on('click', toggleBody)
     }
 
     selection
@@ -192,7 +191,7 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
             .data(dataset)
             .enter()
             .append('g')
-                .on('click', (d, i) => toggleBody(i))
+                .on('click', toggleBody)
                 .attr('class', 'label')
                 .attr('id', d => `${d.name}-label`)
                 .attr('transform', getTransform)
