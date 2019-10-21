@@ -112,20 +112,22 @@ const getBBox = d => {
 }
 
 const getFontSize = d => {
-    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.5, 15])
+    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.5, 12])
     return `${fontScale(d[sizeBy]) * isVisible(d)}rem`
 }
 
 const getTransform = d => {
-    const offset = getBBox(d).width / 2
+    const bbox = getBBox(d)
+    const xOffset = bbox.width / 2
+    const yOffset = bbox.height / 8
     const rotate = `rotate(${isBig(d) ? 0 : -90}, ${xScale(d.xPos)}, ${height / 2})`
-    let x
+    let x, y
     if (isVisible(d)) {
-        x = isBig(d) ? xScale(d.xPos) - offset : xScale(d.xPos + d[sizeBy]) + 5
+        x = isBig(d) ? xScale(d.xPos) - xOffset : xScale(d.xPos + d[sizeBy]) + 5
+        y = height / 2 + 2 + yOffset
     } else {
         return d3.select(`#${d.name}-label`).attr('transform')
     }
-    const y = isVisible(d) ? height / 2 + 2 : 0
     const translate = `translate(${x}, ${y})`
     return `${rotate} ${translate}`
 }
