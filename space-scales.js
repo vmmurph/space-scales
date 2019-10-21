@@ -111,16 +111,13 @@ const draw = (isTransition = false, duration = defaultDuration) => {
         const svgWidth = window.innerWidth - horizontalResize
         svg.attr('width', svgWidth)
         let svgHeight = window.innerHeight - verticalResize
-        if (svgHeight > svgWidth) svgHeight = svgWidth
+        if (svgHeight > svgWidth * .6) svgHeight = svgWidth * .6
         svg.attr('height', svgHeight)
 
         width = svgWidth - margin.left - margin.right
         height = svgHeight - margin.top - margin.bottom
 
         g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
-
-        createBlackHole()
-        
     }
     
     dataset = calcXpos()
@@ -130,6 +127,7 @@ const draw = (isTransition = false, duration = defaultDuration) => {
     drawBodies(isTransition, duration)
     drawLabels(isTransition, duration)
     drawSizeButton(isTransition)
+    createBlackHole()
 }
 
 const drawBodies = (isTransition = false, duration = defaultDuration) => {
@@ -213,14 +211,14 @@ const createBlackHole = () => {
     var radius = 20
     var blackhole = g.append('g')
         .attr('class', 'blackhole')
-        .attr('transform', `translate(${width - radius}, ${height - radius})`)
+        .attr('transform', `translate(${100}, ${15})`)
     blackhole.on('click', activateHole)
     blackhole.append('circle').attr('cx', 5).attr('cy', 5)
         .attr('r', radius).attr('id', 'outside')
     blackhole.append('circle').attr('cx', 5).attr('cy', 5)
         .attr('r', radius * .33).attr('fill', 'white').attr('id', 'inside')
-    hole.x = width - radius
-    hole.y = height - radius
+    hole.x = 105
+    hole.y = 20
 
     var repeat = () => {
         blackhole.select('#inside')
