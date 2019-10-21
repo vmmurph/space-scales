@@ -25,7 +25,7 @@ let moon_data = [
         enabled: true
     },
     {
-        name: 'Luna',
+        name: 'Moon',
         radius: 1737.1,
         color: 'lightgray',
         density: 3.34,

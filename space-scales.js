@@ -112,7 +112,7 @@ const getBBox = d => {
 }
 
 const getFontSize = d => {
-    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.5, 3])
+    const fontScale = d3.scaleLinear().domain([0, xMax / 2]).range([.5, 15])
     return `${fontScale(d[sizeBy]) * isVisible(d)}rem`
 }
 

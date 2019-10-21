@@ -1,7 +1,7 @@
 // radius in km, density in g/cm^3, mass in 10^24kg
 let real_data = [
     {
-        name: 'Sol',
+        name: 'Sun',
         radius: 696000,
         color: 'white',
         density: 1.41,
@@ -33,7 +33,7 @@ let real_data = [
         enabled: true
     },
     {
-        name: 'Luna',
+        name: 'Moon',
         radius: 1737.1,
         color: 'lightgray',
         density: 3.34,
