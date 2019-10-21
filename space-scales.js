@@ -5,7 +5,7 @@
  * There should also be a variable "dataset" that contains the dataset you want to use
  */
 let width, height, g, xMax, spacer, xScale, sizeBy = 'radius', insideHole = false
-const defaultDuration = 2000
+const defaultDuration = 1000
 
 const isVisible = d => {
     if (insideHole) {
@@ -77,8 +77,8 @@ const drawSizeButton = (isTransition = false) => {
 /**
  * Adds or removes a body, then redraws. Returns the button selection.
  */
-const toggleBody = (d, i) => {
-    dataset[i].enabled = !dataset[i].enabled
+const toggleBody = d => {
+    d.enabled = !d.enabled
     draw(true)
 }
 
@@ -131,7 +131,7 @@ const draw = (isTransition = false, duration = defaultDuration) => {
 
 const drawBodies = (isTransition = false, duration = defaultDuration) => {
     let selection = g.selectAll('.bod').data(dataset)
-    if (isTransition) { selection = selection.transition().duration(duration) }
+    if (isTransition) { selection = selection.transition().duration(duration).ease(d3.easeLinear) }
     else {
         selection = selection.enter()
             .append('circle')
@@ -199,7 +199,7 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
                     .text(d => d.name)
                     .attr('font-size', getFontSize)
     } else {
-        g.selectAll('.label').data(dataset).transition().duration(duration)
+        g.selectAll('.label').data(dataset).transition().duration(duration).ease(d3.easeLinear)
             .attr('transform', getTransform)
             .select('text').attr('font-size', getFontSize)
     }
