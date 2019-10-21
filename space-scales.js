@@ -127,7 +127,7 @@ const draw = (isTransition = false, duration = defaultDuration) => {
     drawBodies(isTransition, duration)
     drawLabels(isTransition, duration)
     drawSizeButton(isTransition)
-    createBlackHole()
+    createBlackHole(isTransition)
 }
 
 const drawBodies = (isTransition = false, duration = defaultDuration) => {
@@ -207,7 +207,10 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
 }
 
 let hole = {}
-const createBlackHole = () => {
+const createBlackHole = (isTransition = false, duration = 5000) => {
+    if (isTransition) {
+        d3.selectAll('.blackhole').remove()
+    }
     var radius = 20
     var blackhole = g.append('g')
         .attr('class', 'blackhole')
@@ -223,10 +226,10 @@ const createBlackHole = () => {
     var repeat = () => {
         blackhole.select('#inside')
             .transition()
-            .duration(5000)
+            .duration(duration)
             .attr('r', radius * .8)
             .transition()
-            .duration(5000)
+            .duration(duration)
             .attr('r', radius * .3)
             .on('end', repeat)
     }
