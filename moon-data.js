@@ -1,14 +1,6 @@
 // radius in km, density in g/cm^3, mass in 10^24kg
 let moon_data = [
     {
-        name: 'Sol',
-        radius: 696000,
-        color: 'white',
-        density: 1.41,
-        mass: 1989000,
-        enabled: false
-    },
-    {
         name: 'Mercury',
         radius: 2439,
         color: 'gray',

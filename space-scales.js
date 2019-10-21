@@ -5,6 +5,7 @@
  * There should also be a variable "dataset" that contains the dataset you want to use
  */
 let width, height, g, xMax, spacer, xScale, sizeBy = 'radius', insideHole = false
+const defaultDuration = 2000
 
 const isVisible = d => {
     if (insideHole) {
@@ -54,7 +55,7 @@ const calcXpos = () => {
 }
 
 // draws everything
-const draw = (isTransition = false, duration = 4000) => {
+const draw = (isTransition = false, duration = defaultDuration) => {
     if (!isTransition) {
         _clear()
 
@@ -137,7 +138,7 @@ const isBig = d => {
     return w + pad * 2 < xScale(d[sizeBy] * 2)
 }
 
-const drawLabels = (isTransition = false, duration = 4000) => {
+const drawLabels = (isTransition = false, duration = defaultDuration) => {
     if (!isTransition) {
         g.selectAll('.label')
             .data(dataset)
@@ -183,5 +184,5 @@ const createBlackHole = () => {
 
 const activateHole = () => {
     insideHole = !insideHole
-    draw(true)
+    draw(true, defaultDuration / 2)
 }

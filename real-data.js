@@ -6,7 +6,7 @@ let real_data = [
         color: 'white',
         density: 1.41,
         mass: 1989000,
-        enabled: true
+        enabled: false
     },
     {
         name: 'Mercury',
@@ -47,30 +47,6 @@ let real_data = [
         density: 3.9,
         mass: .639,
         enabled: true
-    },
-    {
-        name: 'Phobos',
-        radius: 11.1,
-        color: '#ffdbdb',
-        density: 1.88,
-        mass: .0000000108,
-        enabled: false
-    },
-    {
-        name: 'Deimos',
-        radius: 6.3,
-        color: '#f7f7eb',
-        density: 1.47,
-        mass: .000000002,
-        enabled: false
-    },
-    {
-        name: 'Ceres',
-        radius: 473,
-        color: 'gray',
-        density: 2.08,
-        mass: .0008958,
-        enabled: false
     },
     {
         name: 'Jupiter',
@@ -121,59 +97,11 @@ let real_data = [
         enabled: true
     },
     {
-        name: 'Mimas',
-        radius: 396 / 2,
-        color: 'lightgray',
-        density: 1.15,
-        mass: .00004,
-        enabled: false
-    },
-    {
-        name: 'Enceladus',
-        radius: 504 / 2,
-        color: '#ededed',
-        density: .7,
-        mass: .00011,
-        enabled: false
-    },
-    {
-        name: 'Tethys',
-        radius: 1062 / 2,
-        color: 'white',
-        density: 1.61,
-        mass: .00062,
-        enabled: false
-    },
-    {
-        name: 'Dione',
-        radius: 1123 / 2,
-        color: 'white',
-        density: 1.48,
-        mass: .0011,
-        enabled: false
-    },
-    {
-        name: 'Rhea',
-        radius: 1527 / 2,
-        color: 'white',
-        density: 1.24,
-        mass: .0023,
-        enabled: false
-    },
-    {
         name: 'Titan',
         radius: 5149 / 2,
         color: '#138537',
         density: 1.88,
         mass: .135,
-        enabled: false
-    },
-    {
-        name: 'Iapetus',
-        radius: 1470 / 2,
-        color: 'beige',
-        density: 1.09,
-        mass: .0018,
         enabled: false
     },
     {
@@ -183,46 +111,6 @@ let real_data = [
         density: 1.3,
         mass: 86.8,
         enabled: true
-    },
-    {
-        name: 'Miranda',
-        radius: 235.8,
-        color: 'lightgray',
-        density: 1.2,
-        mass: .0000659,
-        enabled: false
-    },
-    {
-        name: 'Ariel',
-        radius: 578.9,
-        color: 'gray',
-        density: 1.59,
-        mass: .0011578,
-        enabled: false
-    },
-    {
-        name: 'Umbriel',
-        radius: 584.7,
-        color: 'gray',
-        density: 1.39,
-        mass: .0011694,
-        enabled: false
-    },
-    {
-        name: 'Titania',
-        radius: 788.4,
-        color: '#c7c7c7',
-        density: 1.71,
-        mass: .0015768,
-        enabled: false
-    },
-    {
-        name: 'Oberon',
-        radius: 761.4,
-        color: '#bababa',
-        density: 1.63,
-        mass: .0015228,
-        enabled: false
     },
     {
         name: 'Neptune',
@@ -246,14 +134,6 @@ let real_data = [
         color: '#b0652c',
         density: 1.88,
         mass: .0146,
-        enabled: false
-    },
-    {
-        name: 'Charon',
-        radius: 606,
-        color: 'white',
-        density: 1.702,
-        mass: .001586,
         enabled: false
     }
 ]
