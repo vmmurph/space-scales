@@ -15,7 +15,7 @@
         <script>
             const svg = d3.select('#canvas')
             // percentage of the total to be used for empty space between bodies
-            const spacerPercent = .2
+            const spacerPercent = .25
             // margin and canvas init
             const margin = {
                 top: 10,
@@ -23,6 +23,10 @@
                 bottom: 14,
                 left: 10
             }
+            // default transition time
+            const defaultDuration = 1000
+            // starting size property (can be radius, density, or mass)
+            let sizeBy = 'radius'
 
             getUrlParameter = name => {
                 name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
@@ -38,8 +42,14 @@
                 case 'moons': dataset = moon_data; break
             }
 
-            // on window load, create toggle buttons and draw canvas
+            // for some reason, just calling this here stops a bug where labels begin in the wrong place
+            // happens in chrome in some instances; some kind of timing issue
+            var blah = getBBox(dataset[0])
+            //console.log('bbox before load', getBBox(dataset[8]))
+
+            // on window load, draw canvas
             d3.select(window).on('load', () => {
+                //console.log('bbox after load', getBBox(dataset[8]))
                 window.onresize = () => draw()
                 draw()
             })

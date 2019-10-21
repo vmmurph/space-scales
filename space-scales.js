@@ -4,8 +4,7 @@
  * 
  * There should also be a variable "dataset" that contains the dataset you want to use
  */
-let width, height, g, xMax, spacer, xScale, sizeBy = 'radius', insideHole = false
-const defaultDuration = 1000
+let width, height, g, xMax, spacer, xScale, insideHole = false
 
 const isVisible = d => {
     if (insideHole) {
@@ -150,8 +149,12 @@ const drawBodies = (isTransition = false, duration = defaultDuration) => {
 }
 
 const getBBox = d => {
-    const ele = g.append('text').attr('font-size', getFontSize(d)).text(d.name).attr('id', 'deleteme')
+    const ele = svg.append('text').attr('font-size', getFontSize(d)).text(d.name).attr('id', 'deleteme')
     const bbox = ele.node().getBBox()
+    if (d.name === 'Jupiter') {
+        //console.log('fontsize', getFontSize(d))
+        //console.log('bbox', bbox)
+    }
     d3.select('#deleteme').remove()
     return bbox
 }
