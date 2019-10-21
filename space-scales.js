@@ -21,13 +21,57 @@ const _clear = () => {
 }
 
 /**
- * Sets the metric by which to size bodies, then redraws. A string needs to be passed in that is
- * either 'radius', 'density', or 'mass'. Returns the button selection.
+ * Sets the metric by which to size bodies, then redraws.
  */
-const setSizeBy = (value = 'radius') => {
-    sizeBy = value
+const switchSizeBy = () => {
+    sizeBy = getNextSize(sizeBy)
     draw(true)
-    return d3.select(`#${value}`)
+}
+
+const getSizebyDisplay = () => {
+    switch (sizeBy) {
+        case 'radius': return 'Radius'
+        case 'mass': return 'Mass'
+        case 'density': return 'Density'
+    }
+    return '?'
+}
+
+const getNextSize = (value) => {
+    switch (value) {
+        case 'radius': return 'mass'
+        case 'mass': return 'density'
+        case 'density': return 'radius'
+    }
+    return '?'
+}
+
+const drawSizeButton = (isTransition = false) => {
+    const x = 0
+    const y = 0
+    const w = 80
+    const h = 40
+
+    if (isTransition) {
+        d3.select('.button').remove()
+    }
+
+    const b = g.append('g').attr('id', 'buttons').attr('transform', `translate(${x}, ${y})`)
+        .attr('class', 'button')
+        .on('click', switchSizeBy)
+
+    b.append('rect')
+        .attr('x', 0).attr('y', 0).attr('width', w).attr('height', h)
+        .attr('stroke', 'black').attr('stroke-width', 2)
+        .attr('rx', 10).attr('ry', 10)
+        .attr('fill', 'white')
+        
+    b.append('text')
+        .text(getSizebyDisplay)
+        .style('font-size', 20)
+        .attr('x', w / 2)
+        .attr('y', h / 2)
+        .attr('text-anchor', 'middle').attr('dominant-baseline', 'middle')
 }
 
 /**
@@ -61,8 +105,8 @@ const draw = (isTransition = false, duration = defaultDuration) => {
 
         // additional padding on svg since using straight window size causes scrollbars
         // also useful if needing to add other stuff to the window (buttons, etc)
-        const horizontalResize = 16
-        const verticalResize = d3.select('#buttons').node().clientHeight + 3
+        const horizontalResize = 6
+        const verticalResize = 6
 
         const svgWidth = window.innerWidth - horizontalResize
         svg.attr('width', svgWidth)
@@ -76,12 +120,19 @@ const draw = (isTransition = false, duration = defaultDuration) => {
         g = svg.append('g').attr('transform', `translate(${margin.left}, ${margin.top})`)
 
         createBlackHole()
+        
     }
     
     dataset = calcXpos()
 
     xScale = d3.scaleLinear().domain([0, xMax]).range([0, width])
 
+    drawBodies(isTransition, duration)
+    drawLabels(isTransition, duration)
+    drawSizeButton(isTransition)
+}
+
+const drawBodies = (isTransition = false, duration = defaultDuration) => {
     let selection = g.selectAll('.bod').data(dataset)
     if (isTransition) { selection = selection.transition().duration(duration) }
     else {
@@ -99,9 +150,6 @@ const draw = (isTransition = false, duration = defaultDuration) => {
         .attr('stroke-width', 2)
         .attr('stroke', 'black')
         .attr('id', d => d.name)
-        
-
-    drawLabels(isTransition, duration)
 }
 
 const getBBox = d => {
@@ -160,13 +208,17 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
     }
 }
 
-let hole = { radius: 20, x: width, y: height }
+let hole = {}
 const createBlackHole = () => {
     var radius = 20
-    var blackhole = g.append('g').attr('transform', `translate(${width - radius}, ${height - radius})`)
+    var blackhole = g.append('g')
+        .attr('class', 'blackhole')
+        .attr('transform', `translate(${width - radius}, ${height - radius})`)
     blackhole.on('click', activateHole)
-    blackhole.append('circle').attr('cx', 5).attr('cy', 5).attr('r', radius).attr('id', 'outside')
-    blackhole.append('circle').attr('cx', 5).attr('cy', 5).attr('r', radius * .33).attr('fill', 'white').attr('id', 'inside')
+    blackhole.append('circle').attr('cx', 5).attr('cy', 5)
+        .attr('r', radius).attr('id', 'outside')
+    blackhole.append('circle').attr('cx', 5).attr('cy', 5)
+        .attr('r', radius * .33).attr('fill', 'white').attr('id', 'inside')
     hole.x = width - radius
     hole.y = height - radius
 

@@ -1,24 +1,24 @@
-button {
-    margin: 2px;
-}
-
 svg {
     background-color: #EADBC4;
     border-style: solid;
     border-width: 2px;
-    margin-left: 3px;
+    margin: 3px;
 }
 
-#sizeByGroup {
-    display: inline-block;
+.button {
+    opacity: .7;
+    cursor: pointer;
 }
 
-#toggles {
-    display: inline-block;
-    margin-right: 15px;
+.bod {
+    cursor: pointer;
 }
 
-#toggles .btn-outline-primary:hover {
-    color: black;
-    background-color: white;
+.label {
+    cursor: pointer;
+}
+
+.blackhole {
+    cursor: pointer;
+    opacity: .7;
 }

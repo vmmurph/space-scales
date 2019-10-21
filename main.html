@@ -10,14 +10,7 @@
         <script src="kerbal-data.js"></script>
         <script src="moon-data.js"></script>
     </head>
-    <body id="root">
-        <div id="buttons">
-            <div id="sizebyGroup">
-                <button id="radius" onclick="onSizeByChange('radius')" class="sizeby btn btn-primary">Radius</button>
-                <button id="density" onclick="onSizeByChange('density')" class="sizeby btn btn-outline-primary">Density</button>
-                <button id="mass" onclick="onSizeByChange('mass')" class="sizeby btn btn-outline-primary">Mass</button>
-            </div>
-        </div>
+    <body>
         <svg id="canvas"></svg>
         <script>
             const svg = d3.select('#canvas')
@@ -29,17 +22,6 @@
                 right: 14,
                 bottom: 14,
                 left: 10
-            }
-
-            // resizes bodies, sets styles on buttons
-            const onSizeByChange = (value) => {
-                setSizeBy(value)
-                d3.selectAll('.sizeby')
-                    .classed('btn-primary', false)
-                    .classed('btn-outline-primary', true)
-                d3.select(`#${value}`)
-                    .classed('btn-outline-primary', false)
-                    .classed('btn-primary', true)
             }
 
             getUrlParameter = name => {
