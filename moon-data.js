@@ -40,28 +40,28 @@ let moon_data = [
         mass: .639,
         enabled: true
     },
-    {
-        name: 'Phobos',
-        radius: 11.1,
-        color: '#ffdbdb',
-        density: 1.88,
-        mass: .0000000108,
-        enabled: true
-    },
-    {
-        name: 'Deimos',
-        radius: 6.3,
-        color: '#f7f7eb',
-        density: 1.47,
-        mass: .000000002,
-        enabled: true
-    },
+    // {
+    //     name: 'Phobos',
+    //     radius: 11.1,
+    //     color: '#ffdbdb',
+    //     density: 1.88,
+    //     mass: .0000000108,
+    //     enabled: true
+    // },
+    // {
+    //     name: 'Deimos',
+    //     radius: 6.3,
+    //     color: '#f7f7eb',
+    //     density: 1.47,
+    //     mass: .000000002,
+    //     enabled: true
+    // },
     {
         name: 'Ceres',
-        radius: 473,
+        radius: 472.5,
         color: 'gray',
         density: 2.08,
-        mass: .0008958,
+        mass: .000939,
         enabled: true
     },
     {
@@ -246,6 +246,46 @@ let moon_data = [
         color: 'white',
         density: 1.702,
         mass: .001586,
+        enabled: true
+    },
+    {
+        name: 'Quaoar',
+        radius: 560.5,
+        color: 'pink',
+        density: 1.99,
+        mass: .0014,
+        enabled: true
+    },
+    {
+        name: 'Haumea',
+        radius: 798,
+        color: 'beige',
+        density: 2.52,
+        mass: .0166,
+        enabled: true
+    },
+    {
+        name: 'Makemake',
+        radius: 715,
+        color: 'gray',
+        density: 1.7,
+        mass: .003,
+        enabled: true
+    },
+    {
+        name: 'Eris',
+        radius: 1163,
+        color: 'pink',
+        density: 2.52,
+        mass: .0166,
+        enabled: true
+    },
+    {
+        name: 'Gonggong',
+        radius: 615,
+        color: 'brown',
+        density: 1.74,
+        mass: .00175,
         enabled: true
     }
 ]
