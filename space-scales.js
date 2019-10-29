@@ -130,7 +130,13 @@ const draw = (isTransition = false, duration = defaultDuration) => {
 
 const drawBodies = (isTransition = false, duration = defaultDuration) => {
     let selection = g.selectAll('.bod').data(dataset)
-    if (isTransition) { selection = selection.transition().duration(duration).ease(d3.easeLinear) }
+    if (isTransition) {
+        selection = selection.transition()
+            .duration(duration)
+            // .ease(d3.easeLinear)
+            //.ease(d3.easeElasticOut)
+            .ease(d3.easeBounceOut)
+    }
     else {
         selection = selection.enter()
             .append('circle')
@@ -202,7 +208,7 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
                     .text(d => d.name)
                     .attr('font-size', getFontSize)
     } else {
-        g.selectAll('.label').data(dataset).transition().duration(duration).ease(d3.easeLinear)
+        g.selectAll('.label').data(dataset).transition().duration(800)
             .attr('transform', getTransform)
             .select('text').attr('font-size', getFontSize)
     }
@@ -213,8 +219,8 @@ const createBlackHole = (isTransition = false, duration = 5000) => {
     if (isTransition) {
         d3.selectAll('.blackhole').remove()
     }
-    var radius = 20
-    var blackhole = g.append('g')
+    const radius = 20
+    const blackhole = g.append('g')
         .attr('class', 'blackhole')
         .attr('transform', `translate(${100}, ${15})`)
     blackhole.on('click', activateHole)

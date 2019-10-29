@@ -24,7 +24,7 @@
                 left: 10
             }
             // default transition time
-            const defaultDuration = 1000
+            const defaultDuration = 1500
             // starting size property (can be radius, density, or mass)
             let sizeBy = 'radius'
 
@@ -44,12 +44,10 @@
 
             // for some reason, just calling this here stops a bug where labels begin in the wrong place
             // happens in chrome in some instances; some kind of timing issue
-            var blah = getBBox(dataset[0])
-            //console.log('bbox before load', getBBox(dataset[8]))
+            getBBox(dataset[0])
 
             // on window load, draw canvas
             d3.select(window).on('load', () => {
-                //console.log('bbox after load', getBBox(dataset[8]))
                 window.onresize = () => draw()
                 draw()
             })
