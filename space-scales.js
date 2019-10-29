@@ -135,7 +135,7 @@ const drawBodies = (isTransition = false, duration = defaultDuration) => {
             .duration(duration)
             // .ease(d3.easeLinear)
             //.ease(d3.easeElasticOut)
-            .ease(d3.easeBounceOut)
+            //.ease(d3.easeBounceOut)
     }
     else {
         selection = selection.enter()
@@ -208,7 +208,7 @@ const drawLabels = (isTransition = false, duration = defaultDuration) => {
                     .text(d => d.name)
                     .attr('font-size', getFontSize)
     } else {
-        g.selectAll('.label').data(dataset).transition().duration(800)
+        g.selectAll('.label').data(dataset).transition().duration(duration)
             .attr('transform', getTransform)
             .select('text').attr('font-size', getFontSize)
     }
