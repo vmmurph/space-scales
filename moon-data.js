@@ -114,7 +114,7 @@ let moon_data = [
     },
     {
         name: 'Mimas',
-        radius: 396 / 2,
+        radius: 198,
         color: 'lightgray',
         density: 1.15,
         mass: .00004,
@@ -122,23 +122,23 @@ let moon_data = [
     },
     {
         name: 'Enceladus',
-        radius: 504 / 2,
+        radius: 252,
         color: '#ededed',
-        density: .7,
+        density: 1.61,
         mass: .00011,
         enabled: true
     },
     {
         name: 'Tethys',
-        radius: 1062 / 2,
+        radius: 531,
         color: 'white',
-        density: 1.61,
+        density: .984,
         mass: .00062,
         enabled: true
     },
     {
         name: 'Dione',
-        radius: 1123 / 2,
+        radius: 561.5,
         color: 'white',
         density: 1.48,
         mass: .0011,
@@ -146,7 +146,7 @@ let moon_data = [
     },
     {
         name: 'Rhea',
-        radius: 1527 / 2,
+        radius: 763.5,
         color: 'white',
         density: 1.24,
         mass: .0023,
@@ -154,7 +154,7 @@ let moon_data = [
     },
     {
         name: 'Titan',
-        radius: 5149 / 2,
+        radius: 2574.5,
         color: '#138537',
         density: 1.88,
         mass: .135,
@@ -162,7 +162,7 @@ let moon_data = [
     },
     {
         name: 'Iapetus',
-        radius: 1470 / 2,
+        radius: 735,
         color: 'beige',
         density: 1.09,
         mass: .0018,
