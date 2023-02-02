@@ -11,7 +11,7 @@ let kerbal_data = [
     {
         name: 'Moho',
         radius: 250,
-        color: 'brown',
+        color: '#d13d4b',
         density: 38599.5,
         mass: .00252633,
         enabled: true
@@ -83,7 +83,7 @@ let kerbal_data = [
     {
         name: 'Jool',
         radius: 6000,
-        color: 'green',
+        color: '#5da16b',
         density: 4678.7273,
         mass: 4.2332127,
         enabled: true
