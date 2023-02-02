@@ -19,7 +19,7 @@ let kerbal_data = [
     {
         name: 'Eve',
         radius: 700,
-        color: 'lightpurple',
+        color: '#a26ef5',
         density: 85219.677,
         mass: .12243980,
         enabled: true
@@ -27,7 +27,7 @@ let kerbal_data = [
     {
         name: 'Gilly',
         radius: 13,
-        color: 'lightbrown',
+        color: '#9e7373',
         density: 13496,
         mass: .0000001242,
         enabled: true
@@ -115,7 +115,7 @@ let kerbal_data = [
     {
         name: 'Bop',
         radius: 65,
-        color: 'lightbrown',
+        color: '#9e7373',
         density: 32391,
         mass: .00003726,
         enabled: true
