@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="styles/bootstrap-sketchy.min.css">
+        <link rel="stylesheet" href="styles/custom.css">
+        <title>Space Scales</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <script src="space-scales.js"></script>
+        <script src="real-data.js"></script>
+        <script src="kerbal-data.js"></script>
+        <script src="moon-data.js"></script>
+    </head>
+    <body>
+        <svg id="canvas"></svg>
+        <script>
+            const svg = d3.select('#canvas')
+            // percentage of the total to be used for empty space between bodies
+            const spacerPercent = .25
+            // margin and canvas init
+            const margin = {
+                top: 10,
+                right: 14,
+                bottom: 14,
+                left: 10
+            }
+            // default transition time
+            const defaultDuration = 1500
+            // starting size property (can be radius, density, or mass)
+            let sizeBy = 'radius'
+
+            getUrlParameter = name => {
+                name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+                var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+                var results = regex.exec(location.search);
+                return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            }
+
+            let dataset = real_data
+            const dataParam = getUrlParameter('data')
+            switch (dataParam) {
+                case 'ksp': dataset = kerbal_data; break
+                case 'moons': dataset = moon_data; break
+            }
+
+            // for some reason, just calling this here stops a bug where labels begin in the wrong place
+            // happens in chrome in some instances; some kind of timing issue
+            getBBox(dataset[0])
+
+            // on window load, draw canvas
+            d3.select(window).on('load', () => {
+                window.onresize = () => draw()
+                draw()
+            })
+        </script>
+    </body>
+</html>
